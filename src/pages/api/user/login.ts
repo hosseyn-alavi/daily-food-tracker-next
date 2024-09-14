@@ -1,16 +1,13 @@
 import {User} from "@/models/User";
-import jwt from "jsonwebtoken";
+// import jwt from "jsonwebtoken";
 import type {NextApiRequest, NextApiResponse} from "next";
 
-export default async function handler(
-    req: NextApiRequest,
-    res: NextApiResponse
-) {
+export default function handler(req: NextApiRequest, res: NextApiResponse) {
     res.status(200).json(req.method);
     console.log("req.method", req.method);
     //methodHelper(req, res, "POST");
 
-    const user = await User.findOne({
+    const user = User.findOne({
         where: {
             username: req.body.username,
             password: req.body.password,
@@ -18,24 +15,24 @@ export default async function handler(
     });
     console.log("user:", user);
 
-    if (user) {
-        // Generate JWT token
-        const token = jwt.sign(
-            {
-                username: req.body.username,
-                userId: user.id,
-                dailyGoal: user.dailyGoal ?? 0,
-            },
-            process.env.SECRET_KEY ?? "",
-            {
-                expiresIn: "7d",
-            }
-        );
+    // if (user) {
+    //     // Generate JWT token
+    //     const token = jwt.sign(
+    //         {
+    //             username: req.body.username,
+    //             userId: user.id,
+    //             dailyGoal: user.dailyGoal ?? 0,
+    //         },
+    //         process.env.SECRET_KEY ?? "",
+    //         {
+    //             expiresIn: "7d",
+    //         }
+    //     );
 
-        res.json({token});
-    } else {
-        res.status(401).json({error: "Invalid credentials"});
-    }
+    //     res.json({token});
+    // } else {
+    //     res.status(401).json({error: "Invalid credentials"});
+    // }
 }
 
 // export function methodHelper(
