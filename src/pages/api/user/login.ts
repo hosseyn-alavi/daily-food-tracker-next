@@ -3,8 +3,6 @@ import jwt from "jsonwebtoken";
 import type {NextApiRequest, NextApiResponse} from "next";
 
 export default async function login(req: NextApiRequest, res: NextApiResponse) {
-    res.status(200).json(req.method);
-    console.log("req.method", req.method);
     methodHelper(req, res, "POST");
 
     const user = await User.findOne({
@@ -13,7 +11,6 @@ export default async function login(req: NextApiRequest, res: NextApiResponse) {
             password: req.body.password,
         },
     });
-    console.log("user:", user);
 
     if (user) {
         // Generate JWT token
