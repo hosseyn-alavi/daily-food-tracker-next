@@ -38,6 +38,7 @@ const LoginForm = () => {
             router.push("/");
         } else {
             setIsError(true);
+            setIsLoading(false);
         }
         reset();
     };
