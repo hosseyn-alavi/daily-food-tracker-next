@@ -15,11 +15,7 @@ export interface Inputs {
     password: string;
 }
 
-interface Props {
-    setIsLoggedIn: (arg: boolean) => void;
-}
-
-const LoginForm = ({setIsLoggedIn}: Props) => {
+const LoginForm = () => {
     const [isError, setIsError] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
 

@@ -15,7 +15,7 @@ enum ActivePage {
 }
 
 function Home() {
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [isLoggedIn] = useState(false);
     const [activePage] = useState(ActivePage.Main);
 
     const router = useRouter();
