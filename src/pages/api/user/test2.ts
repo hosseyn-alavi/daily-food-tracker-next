@@ -1,5 +1,13 @@
+import {User} from "@/models/User";
 import type {NextApiRequest, NextApiResponse} from "next";
 
-export default function login(req: NextApiRequest, res: NextApiResponse) {
-    res.status(200).json({name: "John Doe2"});
+export default async function login(req: NextApiRequest, res: NextApiResponse) {
+    const user = await User.findOne({
+        where: {
+            username: req.body.username,
+            password: req.body.password,
+        },
+    });
+
+    res.status(200).json(user);
 }
