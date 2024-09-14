@@ -5,7 +5,7 @@ import type {NextApiRequest, NextApiResponse} from "next";
 export default async function login(req: NextApiRequest, res: NextApiResponse) {
     res.status(200).json(req.method);
     console.log("req.method", req.method);
-    methodHelper(req, res, "POST");
+    //methodHelper(req, res, "POST");
 
     const user = await User.findOne({
         where: {
@@ -35,13 +35,13 @@ export default async function login(req: NextApiRequest, res: NextApiResponse) {
     }
 }
 
-export function methodHelper(
-    req: NextApiRequest,
-    res: NextApiResponse,
-    method: string
-) {
-    if (req.method !== method) {
-        res.setHeader("Allow", [method]);
-        res.status(405).end(`Method ${req.method} Not Allowed`);
-    }
-}
+// export function methodHelper(
+//     req: NextApiRequest,
+//     res: NextApiResponse,
+//     method: string
+// ) {
+//     if (req.method !== method) {
+//         res.setHeader("Allow", [method]);
+//         res.status(405).end(`Method ${req.method} Not Allowed`);
+//     }
+// }
