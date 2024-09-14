@@ -1,7 +1,9 @@
 import {Sequelize} from "sequelize";
+import pg from "pg";
 
 export const sequelize = new Sequelize(process.env.DB_URI ?? "", {
     dialect: "postgres",
+    dialectModule: pg,
     logging: false, // Disable logging if you want
     dialectOptions: {
         ssl: {
