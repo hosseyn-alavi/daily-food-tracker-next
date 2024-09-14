@@ -1,7 +1,8 @@
 import {User} from "@/models/User";
 import jwt from "jsonwebtoken";
+import {NextApiRequest, NextApiResponse} from "next";
 
-export async function login(req: any, res: any) {
+export async function login(req: NextApiRequest, res: NextApiResponse) {
     const user = await User.findOne({
         where: {
             username: req.body.username,
