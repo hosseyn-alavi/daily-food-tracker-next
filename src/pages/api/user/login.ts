@@ -2,7 +2,10 @@ import {User} from "@/models/User";
 import jwt from "jsonwebtoken";
 import type {NextApiRequest, NextApiResponse} from "next";
 
-export default async function login(req: NextApiRequest, res: NextApiResponse) {
+export default async function handler(
+    req: NextApiRequest,
+    res: NextApiResponse
+) {
     res.status(200).json(req.method);
     console.log("req.method", req.method);
     //methodHelper(req, res, "POST");
