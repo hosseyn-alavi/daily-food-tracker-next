@@ -1,4 +1,4 @@
-import {Inputs} from "@/pages/login";
+import type {Inputs} from "@/app/login/page";
 import axios from "./axios";
 
 export const login = async (arg: Inputs) => {

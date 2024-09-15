@@ -1,3 +1,4 @@
+"use client";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
@@ -8,7 +9,7 @@ import {useForm} from "react-hook-form";
 import {useState} from "react";
 import {Alert, CircularProgress} from "@mui/material";
 import {login} from "@/lib/api/auth";
-import {useRouter} from "next/router";
+import {useRouter} from "next/navigation";
 
 export interface Inputs {
     username: string;
