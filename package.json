@@ -1,34 +1,37 @@
 {
-  "name": "daily-food-tracker",
-  "version": "0.1.0",
-  "private": true,
-  "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint"
-  },
-  "dependencies": {
-    "@emotion/react": "^11.13.3",
-    "@emotion/styled": "^11.13.0",
-    "@mui/material": "^6.1.0",
-    "axios": "^1.7.7",
-    "jsonwebtoken": "^9.0.2",
-    "next": "14.2.11",
-    "pg": "^8.12.0",
-    "react": "^18",
-    "react-dom": "^18",
-    "react-hook-form": "^7.53.0",
-    "sequelize": "^6.37.3"
-  },
-  "devDependencies": {
-    "@types/jsonwebtoken": "^9.0.6",
-    "@types/node": "^20",
-    "@types/pg": "^8.11.10",
-    "@types/react": "^18",
-    "@types/react-dom": "^18",
-    "eslint": "^8",
-    "eslint-config-next": "14.2.11",
-    "typescript": "^5"
-  }
+    "name": "daily-food-tracker",
+    "version": "0.1.0",
+    "private": true,
+    "scripts": {
+        "dev": "next dev",
+        "bun": "bun --bun run dev",
+        "build": "next build",
+        "start": "next start",
+        "lint": "next lint"
+    },
+    "dependencies": {
+        "@emotion/react": "^11.13.3",
+        "@emotion/styled": "^11.13.0",
+        "@mui/icons-material": "^6.1.0",
+        "@mui/material": "^6.1.0",
+        "axios": "^1.7.7",
+        "jsonwebtoken": "^9.0.2",
+        "next": "14.2.11",
+        "pg": "^8.12.0",
+        "react": "^18",
+        "react-dom": "^18",
+        "react-hook-form": "^7.53.0",
+        "sequelize": "^6.37.3",
+        "zod": "^3.23.8"
+    },
+    "devDependencies": {
+        "@types/jsonwebtoken": "^9.0.6",
+        "@types/node": "^20",
+        "@types/pg": "^8.11.10",
+        "@types/react": "^18",
+        "@types/react-dom": "^18",
+        "eslint": "^8",
+        "eslint-config-next": "14.2.11",
+        "typescript": "^5"
+    }
 }
