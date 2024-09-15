@@ -1,6 +1,4 @@
-import type {NextApiRequest} from "next";
-
-export async function GET(request: NextApiRequest) {
+export async function GET(request: Request) {
     return new Response(`Hello, world! ${request.method}`, {
         status: 200,
     });
