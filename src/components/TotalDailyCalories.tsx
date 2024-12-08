@@ -14,12 +14,7 @@ export function TotalDailyCalories({
     const [progress, setProgress] = useState(0);
 
     useEffect(() => {
-        let sum = 0;
-        records.forEach((obj: any) => {
-            if (obj.total) {
-                sum += obj.total;
-            }
-        });
+        const sum = records.reduce((sum, {total}) => sum + total, 0);
         const totalDailyCal = Number(sum.toFixed(2));
         setTotalDaily(totalDailyCal);
 
