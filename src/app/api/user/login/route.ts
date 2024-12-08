@@ -24,7 +24,6 @@ export async function POST(req: Request) {
         });
 
         if (user) {
-            // Generate JWT token
             const token = jwt.sign(
                 {
                     username: body.username,
