@@ -4,7 +4,7 @@ import {Container, Box, Paper, Typography} from "@mui/material";
 import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
 import {LocalizationProvider} from "@mui/x-date-pickers/LocalizationProvider";
 import {DatePicker} from "@mui/x-date-pickers/DatePicker";
-import {useEffect, useState} from "react";
+import {useCallback, useEffect, useState} from "react";
 import dayjs from "dayjs";
 import {TotalDailyCalories} from "../../components/TotalDailyCalories";
 import {
@@ -16,16 +16,16 @@ import {DeleteButton} from "@/components/DeleteButton";
 function RecordsPage() {
     const [records, setRecords] = useState<GetRecordResponse>({records: []});
 
-    const getRecords = async (date?: Date) => {
+    const getRecords = useCallback(async (date?: Date) => {
         const res = await getDailyRecords(date);
         if (res) {
             setRecords(res);
         }
-    };
+    }, []);
 
     useEffect(() => {
         getRecords();
-    }, []);
+    }, [getRecords]);
 
     return (
         <Container
