@@ -2,7 +2,7 @@
 import {Home, SoupKitchen, TableView} from "@mui/icons-material";
 import {BottomNavigation, BottomNavigationAction, Box} from "@mui/material";
 import {ThemeProvider, createTheme} from "@mui/material/styles";
-import {useRouter} from "next/navigation";
+import {usePathname, useRouter} from "next/navigation";
 import {useEffect, type ReactNode} from "react";
 
 interface LayoutProps {
@@ -11,6 +11,7 @@ interface LayoutProps {
 
 export const Layout = ({children}: LayoutProps) => {
     const router = useRouter();
+    const pathname = usePathname();
 
     useEffect(() => {
         const token = localStorage.getItem("token");
@@ -47,22 +48,26 @@ export const Layout = ({children}: LayoutProps) => {
                     <div>
                         <BottomNavigation
                             showLabels
+                            value={pathname}
                             // value={value}
                             // onChange={(event, newValue) => {
                             //   setValue(newValue);
                             // }}
                         >
                             <BottomNavigationAction
+                                value="/"
                                 label="Home"
                                 icon={<Home />}
                                 onClick={() => router.push("/")}
                             />
                             <BottomNavigationAction
+                                value="/view"
                                 label="View"
                                 icon={<TableView />}
                                 onClick={() => router.push("/view")}
                             />
                             <BottomNavigationAction
+                                value="/foods"
                                 label="Foods"
                                 icon={<SoupKitchen />}
                                 onClick={() => router.push("/foods")}

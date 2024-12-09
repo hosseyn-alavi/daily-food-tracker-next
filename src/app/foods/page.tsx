@@ -1,6 +1,6 @@
 "use client";
 import {Container, Box, Paper, Typography} from "@mui/material";
-import {useEffect, useState} from "react";
+import {useCallback, useEffect, useState} from "react";
 
 import {DeleteButton} from "../../components/DeleteButton";
 import {getFoodsList} from "@/lib/api/getFoodList";
@@ -10,16 +10,15 @@ import {AddFoodForm} from "@/components/AddFoodForm";
 function FoodsPage() {
     const [foodList, setFoodList] = useState<FoodAttributes[]>([]);
 
-    const getFoods = async () => {
+    const getFoods = useCallback(async () => {
         const res = await getFoodsList();
         if (res) {
             setFoodList(res);
         }
-    };
-
+    }, []);
     useEffect(() => {
         getFoods();
-    }, []);
+    }, [getFoods]);
 
     return (
         <Container component="div" maxWidth="xs">

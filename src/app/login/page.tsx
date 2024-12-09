@@ -94,18 +94,15 @@ const LoginForm = () => {
                         error={Boolean(errors.password)}
                     />
 
-                    {isLoading ? (
-                        <CircularProgress />
-                    ) : (
-                        <Button
-                            type="submit"
-                            fullWidth
-                            variant="contained"
-                            sx={{mt: 3, mb: 2}}
-                        >
-                            Sign In
-                        </Button>
-                    )}
+                    <Button
+                        type="submit"
+                        fullWidth
+                        variant="contained"
+                        sx={{mt: 3, mb: 2}}
+                        size="large"
+                    >
+                        {isLoading ? <CircularProgress size={23} /> : "Sign In"}
+                    </Button>
                 </Box>
                 {isError && (
                     <Alert severity="error">Something went wrong!</Alert>

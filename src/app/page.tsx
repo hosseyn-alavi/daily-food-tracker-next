@@ -20,7 +20,7 @@ import {
     Typography,
 } from "@mui/material";
 import {useRouter} from "next/navigation";
-import {useEffect, useState} from "react";
+import {useCallback, useEffect, useState} from "react";
 import {useForm} from "react-hook-form";
 
 export interface FoodDetailsRecord {
@@ -50,23 +50,22 @@ function Home() {
         reset,
         setValue,
         formState: {errors},
-        //getValues,
         watch,
     } = useForm<FoodDetailsRecord>();
 
-    const getFoods = async () => {
+    const getFoods = useCallback(async () => {
         const res = await getFoodsList();
         if (res) {
             setOptions(res);
         }
-    };
+    }, []);
 
-    const getDailyRecordsApi = async () => {
+    const getDailyRecordsApi = useCallback(async () => {
         const res = await getDailyRecords();
         if (res) {
             setDailyRecordsCal(res);
         }
-    };
+    }, []);
 
     useEffect(() => {
         const token = localStorage.getItem("token");
@@ -77,7 +76,7 @@ function Home() {
 
         getFoods();
         getDailyRecordsApi();
-    }, [router]);
+    }, [router, getFoods, getDailyRecordsApi]);
 
     const onSubmit = async (data: FoodDetailsRecord) => {
         data.total = ((data.amount ?? 0) * (data.caloriesPer100g ?? 0)) / 100;
@@ -161,8 +160,10 @@ function Home() {
                         {...register("name", {required: true})}
                         helperText={errors.name && "Food name is require."}
                         error={Boolean(errors.name)}
-                        InputLabelProps={{
-                            shrink: Boolean(watch("name")),
+                        slotProps={{
+                            inputLabel: {
+                                shrink: Boolean(watch("name")),
+                            },
                         }}
                     />
                     <TextField
@@ -180,8 +181,10 @@ function Home() {
                             "Food calories is require."
                         }
                         error={Boolean(errors.caloriesPer100g)}
-                        InputLabelProps={{
-                            shrink: Boolean(watch("caloriesPer100g")),
+                        slotProps={{
+                            inputLabel: {
+                                shrink: Boolean(watch("caloriesPer100g")),
+                            },
                         }}
                     />
                     <TextField
@@ -197,8 +200,10 @@ function Home() {
                         }
                         error={Boolean(errors.amount)}
                         {...register("amount", {required: true})}
-                        InputLabelProps={{
-                            shrink: Boolean(watch("amount")),
+                        slotProps={{
+                            inputLabel: {
+                                shrink: Boolean(watch("amount")),
+                            },
                         }}
                     />
                     <Typography color="text.primary">
@@ -208,39 +213,16 @@ function Home() {
                             100
                         }`}
                     </Typography>
-
-                    {/* <TextField
-                margin="normal"
-                required
-                fullWidth
-                type="number"
-                label="Total cal"
-                id="total-cal"
-                {...register("total", {
-                  required: true,
-                })}
-                helperText={errors.caloriesPer100g && "Total calories is require."}
-                error={Boolean(errors.total)}
-              >
-                {`Total = ${
-                  (Number(watch("amount") ?? 0) *
-                    Number(watch("caloriesPer100g") ?? 0)) /
-                  100
-                }`}
-              </TextField> */}
-                    {isLoading ? (
-                        <CircularProgress />
-                    ) : (
-                        <Button
-                            type="submit"
-                            fullWidth
-                            variant="contained"
-                            sx={{mt: 3, mb: 2}}
-                            disabled={isLoading || !watch("amount")}
-                        >
-                            Submit
-                        </Button>
-                    )}
+                    <Button
+                        type="submit"
+                        fullWidth
+                        variant="contained"
+                        sx={{mt: 3, mb: 2}}
+                        disabled={isLoading || !watch("amount")}
+                        size="large"
+                    >
+                        {isLoading ? <CircularProgress size={25} /> : "Submit"}
+                    </Button>
                 </Box>
                 {isError && (
                     <Alert severity="error">Something went wrong!</Alert>
