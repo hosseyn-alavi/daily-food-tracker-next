@@ -9,7 +9,7 @@ interface Props {
 
 export function TotalDailyCalories({
     dailyRecordsCal: {records, dailyGoal},
-}: Props) {
+}: Readonly<Props>) {
     const [totalDaily, setTotalDaily] = useState(0);
     const [progress, setProgress] = useState(0);
 
@@ -19,6 +19,7 @@ export function TotalDailyCalories({
         setTotalDaily(totalDailyCal);
 
         const progressPercentage = (totalDailyCal / (dailyGoal ?? 0)) * 100;
+        console.log("progressPercentage:", progressPercentage);
         setProgress(progressPercentage);
     }, [records, dailyGoal]);
 
@@ -29,15 +30,14 @@ export function TotalDailyCalories({
             {range: 100, color: "red"},
         ];
 
-        for (let i = 0; i < colorRanges.length; i++) {
-            if (progress <= colorRanges[i].range) {
-                return colorRanges[i].color;
+        for (const colorRange of colorRanges) {
+            if (progress <= colorRange.range) {
+                return colorRange.color;
             }
         }
 
         return "red";
     };
-
     return (
         <div>
             <Paper
