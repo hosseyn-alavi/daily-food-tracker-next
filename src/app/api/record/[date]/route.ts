@@ -7,6 +7,7 @@ export async function GET(
     {params}: {params: {date: string}}
 ) {
     const {date} = params;
+    const {dailyGoal} = authorizeApi(req);
 
     try {
         // Example: Query database with date
@@ -14,7 +15,7 @@ export async function GET(
             where: {date},
         });
 
-        return NextResponse.json({records});
+        return NextResponse.json({records, dailyGoal});
     } catch (error) {
         console.error("Error fetching records:", error);
         return NextResponse.json(

@@ -1,3 +1,4 @@
+import {authorizeApi} from "@/lib/validateJWT";
 import {DailyRecord} from "@/models/DailyRecord";
 import {NextResponse, type NextRequest} from "next/server";
 
@@ -6,6 +7,7 @@ export async function DELETE(
     {params}: {params: {id: string}}
 ) {
     const {id} = params;
+    authorizeApi(req);
     try {
         const rec = await DailyRecord.destroy({where: {id}});
         if (rec) {

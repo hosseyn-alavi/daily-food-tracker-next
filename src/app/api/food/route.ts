@@ -1,7 +1,9 @@
+import {authorizeApi} from "@/lib/validateJWT";
 import {Food} from "@/models/Food";
 import {NextResponse} from "next/server";
 
-export async function GET() {
+export async function GET(req: Request) {
+    authorizeApi(req);
     try {
         const foods = await Food.findAll();
 
@@ -15,6 +17,7 @@ export async function GET() {
 }
 
 export async function POST(req: Request) {
+    authorizeApi(req);
     try {
         const body = await req.json();
         const food = await Food.create(body);

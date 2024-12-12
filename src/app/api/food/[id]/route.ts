@@ -1,3 +1,4 @@
+import {authorizeApi} from "@/lib/validateJWT";
 import {Food} from "@/models/Food";
 import {NextResponse, type NextRequest} from "next/server";
 
@@ -5,6 +6,8 @@ export async function DELETE(
     req: NextRequest,
     {params}: {params: {id: string}}
 ) {
+    authorizeApi(req);
+
     const {id} = params;
     try {
         const food = await Food.destroy({where: {id}});
