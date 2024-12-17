@@ -111,7 +111,6 @@ export const AddFoodForm = ({resetList}: Props) => {
                             margin="normal"
                             required
                             fullWidth
-                            type="number"
                             label="Calories per 100gr"
                             id="cal-per-100gr"
                             {...register("caloriesPer100g", {required: true})}
@@ -120,7 +119,12 @@ export const AddFoodForm = ({resetList}: Props) => {
                                 "CaloriesPer100g  is require."
                             }
                             error={Boolean(errors.caloriesPer100g)}
+                            type="number"
                             slotProps={{
+                                htmlInput: {
+                                    inputMode: "decimal",
+                                    pattern: "[0-9]*",
+                                },
                                 inputLabel: {
                                     shrink: Boolean(watch("caloriesPer100g")),
                                 },
@@ -129,12 +133,16 @@ export const AddFoodForm = ({resetList}: Props) => {
                         <TextField
                             margin="normal"
                             fullWidth
-                            type="number"
                             label="DefaultWeight"
                             id="defaultWeight"
                             {...register("defaultWeight")}
                             error={Boolean(errors.defaultWeight)}
+                            type="number"
                             slotProps={{
+                                htmlInput: {
+                                    inputMode: "decimal",
+                                    pattern: "[0-9]*",
+                                },
                                 inputLabel: {
                                     shrink: Boolean(watch("defaultWeight")),
                                 },

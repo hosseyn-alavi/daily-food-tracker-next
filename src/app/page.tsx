@@ -171,9 +171,8 @@ function Home() {
                         margin="normal"
                         required
                         fullWidth
-                        label="Calories per 100gr"
+                        label="Calories per 100gr8"
                         id="cal-per-100gr"
-                        inputMode="numeric"
                         autoComplete="calories per 100gr"
                         {...register("caloriesPer100g", {
                             required: true,
@@ -183,8 +182,12 @@ function Home() {
                             "Food calories is require."
                         }
                         error={Boolean(errors.caloriesPer100g)}
+                        type="number"
                         slotProps={{
-                            input: {inputMode: "numeric"},
+                            htmlInput: {
+                                inputMode: "decimal",
+                                pattern: "[0-9]*",
+                            },
                             inputLabel: {
                                 shrink: Boolean(watch("caloriesPer100g")),
                             },
@@ -194,7 +197,6 @@ function Home() {
                         margin="normal"
                         required
                         fullWidth
-                        type="number"
                         label="Amount"
                         id="amount"
                         autoComplete="amount"
@@ -203,8 +205,12 @@ function Home() {
                         }
                         error={Boolean(errors.amount)}
                         {...register("amount", {required: true})}
+                        type="number"
                         slotProps={{
-                            input: {inputMode: "numeric"},
+                            htmlInput: {
+                                inputMode: "decimal",
+                                pattern: "[0-9]*",
+                            },
                             inputLabel: {
                                 shrink: Boolean(watch("amount")),
                             },
