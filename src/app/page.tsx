@@ -76,7 +76,7 @@ function Home() {
 
         getFoods();
         getDailyRecordsApi();
-    }, [router, getFoods, getDailyRecordsApi]);
+    }, [getFoods, router, getDailyRecordsApi]);
 
     const onSubmit = async (data: FoodDetailsRecord) => {
         data.total = ((data.amount ?? 0) * (data.caloriesPer100g ?? 0)) / 100;

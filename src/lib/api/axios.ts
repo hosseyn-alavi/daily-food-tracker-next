@@ -21,7 +21,7 @@ instance.interceptors.response.use(
     (error) => {
         if (error.response.status === 403) {
             localStorage.removeItem("token");
-            window.location.reload();
+            window.location.href = "/login";
         }
 
         return error;
