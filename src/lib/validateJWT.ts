@@ -29,12 +29,14 @@ export function authorizeApi(req: Request) {
     return validateJWT(token);
 }
 
-export function withAuth(handler: (req: NextRequest) => Promise<NextResponse>) {
-    return async (req: NextRequest) => {
+type Params = {params:{id:string}}
+
+export function withAuth(handler: (req: NextRequest, params:Params) => Promise<NextResponse>) {
+    return async (req: NextRequest, params:Params) => {
         try {
             authorizeApi(req);
 
-            return await handler(req);
+            return await handler(req, params);
         } catch (error: unknown) {
             const err = error as {status: number; message: string};
 
