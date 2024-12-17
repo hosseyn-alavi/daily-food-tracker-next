@@ -47,6 +47,7 @@ function FoodsPage() {
                                 display: "flex",
                                 justifyContent: "space-between",
                                 height: 25,
+                                position: "relative",
                             }}
                         >
                             <Typography variant="body1">

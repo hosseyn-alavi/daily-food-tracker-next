@@ -3,6 +3,7 @@ import {Home, SoupKitchen, TableView} from "@mui/icons-material";
 import {BottomNavigation, BottomNavigationAction, Box} from "@mui/material";
 import {ThemeProvider, createTheme} from "@mui/material/styles";
 import {usePathname, useRouter} from "next/navigation";
+import {SnackbarProvider} from "notistack";
 import {useEffect, type ReactNode} from "react";
 
 interface LayoutProps {
@@ -28,6 +29,7 @@ export const Layout = ({children}: LayoutProps) => {
 
     return (
         <ThemeProvider theme={theme}>
+            <SnackbarProvider />
             <Box
                 sx={(theme) => ({
                     backgroundColor: theme.palette.background.paper,
