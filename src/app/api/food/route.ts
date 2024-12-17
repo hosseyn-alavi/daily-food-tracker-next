@@ -1,33 +1,7 @@
-import {authorizeApi} from "@/lib/validateJWT";
-import {Food} from "@/models/Food";
-import {NextResponse} from "next/server";
+import {withAuth} from "@/lib/validateJWT";
+import {getFoods} from "./getFoods";
+import {createFood} from "./createFood";
 
-export async function GET(req: Request) {
-    authorizeApi(req);
-    try {
-        const foods = await Food.findAll();
+export const GET = withAuth(getFoods);
 
-        return NextResponse.json(foods);
-    } catch {
-        return NextResponse.json(
-            {error: "Internal server error"},
-            {status: 500}
-        );
-    }
-}
-
-export async function POST(req: Request) {
-    authorizeApi(req);
-    try {
-        const body = await req.json();
-        const food = await Food.create(body);
-        if (food) {
-            NextResponse.json(food);
-        }
-    } catch {
-        return NextResponse.json(
-            {error: "Internal server error"},
-            {status: 500}
-        );
-    }
-}
+export const POST = withAuth(createFood);
