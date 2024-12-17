@@ -45,7 +45,7 @@ export function TotalDailyCalories({
             <Paper
                 variant="outlined"
                 sx={{
-                    width: 210,
+                    width: 250,
                     height: 54,
                     p: 2,
                     mb: 1,
@@ -58,7 +58,7 @@ export function TotalDailyCalories({
                 {isLoading ? (
                     <Skeleton
                         variant="rounded"
-                        width={210}
+                        width={250}
                         height={54}
                         sx={{m: -2}}
                     />
