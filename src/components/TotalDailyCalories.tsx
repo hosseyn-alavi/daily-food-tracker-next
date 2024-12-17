@@ -1,14 +1,16 @@
 "use client";
 import {useEffect, useState} from "react";
-import {Paper} from "@mui/material";
+import {Paper, Skeleton} from "@mui/material";
 import type {GetRecordResponse} from "@/lib/api/getDailyRecord";
 
 interface Props {
     dailyRecordsCal: GetRecordResponse;
+    isLoading: boolean;
 }
 
 export function TotalDailyCalories({
     dailyRecordsCal: {records, dailyGoal},
+    isLoading,
 }: Readonly<Props>) {
     const [totalDaily, setTotalDaily] = useState(0);
     const [progress, setProgress] = useState(0);
@@ -43,6 +45,8 @@ export function TotalDailyCalories({
             <Paper
                 variant="outlined"
                 sx={{
+                    width: 210,
+                    height: 54,
                     p: 2,
                     mb: 1,
                     backgroundColor: "transparent",
@@ -51,18 +55,29 @@ export function TotalDailyCalories({
                     zIndex: 1,
                 }}
             >
-                <div
-                    style={{
-                        backgroundColor: `${getBackgroundColor()}`,
-                        width: `${progress}%`,
-                        height: 54,
-                        position: "absolute",
-                        zIndex: -1,
-                        top: 0,
-                        left: 0,
-                    }}
-                />
-                {`Daily total calories =  ${totalDaily}`}
+                {isLoading ? (
+                    <Skeleton
+                        variant="rounded"
+                        width={210}
+                        height={54}
+                        sx={{m: -2}}
+                    />
+                ) : (
+                    <>
+                        <div
+                            style={{
+                                backgroundColor: `${getBackgroundColor()}`,
+                                width: `${progress}%`,
+                                height: 54,
+                                position: "absolute",
+                                zIndex: -1,
+                                top: 0,
+                                left: 0,
+                            }}
+                        />
+                        {`Daily total calories =  ${totalDaily}`}
+                    </>
+                )}
             </Paper>
         </div>
     );

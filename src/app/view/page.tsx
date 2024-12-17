@@ -15,12 +15,15 @@ import {DeleteButton} from "@/components/DeleteButton";
 
 function RecordsPage() {
     const [records, setRecords] = useState<GetRecordResponse>({records: []});
+    const [isLoading, setIsLoading] = useState(false);
 
     const getRecords = useCallback(async (date?: Date) => {
+        setIsLoading(true);
         const res = await getDailyRecords(date);
         if (res) {
             setRecords(res);
         }
+        setIsLoading(false);
     }, []);
 
     useEffect(() => {
@@ -52,7 +55,10 @@ function RecordsPage() {
                 />
             </LocalizationProvider>
             <Box>
-                <TotalDailyCalories dailyRecordsCal={records} />
+                <TotalDailyCalories
+                    dailyRecordsCal={records}
+                    isLoading={isLoading}
+                />
             </Box>
 
             <Box

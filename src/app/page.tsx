@@ -9,17 +9,16 @@ import {getFoodsList} from "@/lib/api/getFoodList";
 import {submitRecords} from "@/lib/api/submitRecords";
 import type {FoodAttributes} from "@/models/Food";
 import {
-    Alert,
     Autocomplete,
     Box,
     Button,
     CircularProgress,
     Container,
-    Snackbar,
     TextField,
     Typography,
 } from "@mui/material";
 import {useRouter} from "next/navigation";
+import {enqueueSnackbar} from "notistack";
 import {useCallback, useEffect, useState} from "react";
 import {useForm} from "react-hook-form";
 
@@ -33,14 +32,13 @@ export interface FoodDetailsRecord {
 
 function Home() {
     const [options, setOptions] = useState<FoodAttributes[]>([]);
-
-    const [isError, setIsError] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
-    const [message, setMessage] = useState("");
-    const [open, setOpen] = useState(false);
     const [dailyRecordsCal, setDailyRecordsCal] = useState<GetRecordResponse>({
         records: [],
     });
+    const [isGetDailyRecordsLoading, setIsGetDailyRecordsLoading] =
+        useState(false);
+    const [isGetFoodsLoading, setIsGetFoodsLoading] = useState(false);
 
     const router = useRouter();
 
@@ -54,17 +52,21 @@ function Home() {
     } = useForm<FoodDetailsRecord>();
 
     const getFoods = useCallback(async () => {
+        setIsGetFoodsLoading(true);
         const res = await getFoodsList();
         if (res) {
             setOptions(res);
         }
+        setIsGetFoodsLoading(false);
     }, []);
 
     const getDailyRecordsApi = useCallback(async () => {
+        setIsGetDailyRecordsLoading(true);
         const res = await getDailyRecords();
         if (res) {
             setDailyRecordsCal(res);
         }
+        setIsGetDailyRecordsLoading(false);
     }, []);
 
     useEffect(() => {
@@ -84,34 +86,22 @@ function Home() {
         const res = await submitRecords(data);
 
         if (res && res.status === 200) {
-            setIsLoading(false);
-            setIsError(false);
             reset();
             getDailyRecordsApi();
-            setOpen(true);
-            setMessage("Record added successfully");
+            enqueueSnackbar("Record added successfully", {
+                variant: "success",
+            });
         } else {
-            setIsLoading(false);
-            setIsError(true);
+            enqueueSnackbar("Error submitting record", {
+                variant: "error",
+            });
         }
-    };
-
-    const handleClose = () => {
-        setOpen(false);
+        setIsLoading(false);
     };
 
     return (
         <Container component="div" maxWidth="xs">
             <LogoutButton />
-
-            <Snackbar
-                open={open}
-                anchorOrigin={{horizontal: "center", vertical: "top"}}
-                onClose={handleClose}
-                autoHideDuration={3000}
-            >
-                <Alert severity="success">{message}</Alert>
-            </Snackbar>
 
             <Box
                 sx={{
@@ -121,7 +111,10 @@ function Home() {
                     alignItems: "center",
                 }}
             >
-                <TotalDailyCalories dailyRecordsCal={dailyRecordsCal} />
+                <TotalDailyCalories
+                    dailyRecordsCal={dailyRecordsCal}
+                    isLoading={isGetDailyRecordsLoading}
+                />
 
                 <Autocomplete
                     disablePortal
@@ -130,7 +123,14 @@ function Home() {
                     renderInput={(params) => (
                         <TextField {...params} label="Food" />
                     )}
+                    popupIcon={
+                        isGetFoodsLoading ? (
+                            <CircularProgress color="inherit" size={20} />
+                        ) : undefined
+                    }
+                    disabled={isGetFoodsLoading}
                     getOptionLabel={(opt) => opt.name}
+                    value={null}
                     onChange={(e, v) => {
                         setValue("name", v?.name ? v.name : "");
                         setValue(
@@ -141,6 +141,7 @@ function Home() {
                             "amount",
                             v?.defaultWeight ? v.defaultWeight : null
                         );
+                        document.getElementById("amount")?.focus();
                     }}
                 />
                 <Box
@@ -172,6 +173,7 @@ function Home() {
                         fullWidth
                         label="Calories per 100gr"
                         id="cal-per-100gr"
+                        inputMode="numeric"
                         autoComplete="calories per 100gr"
                         {...register("caloriesPer100g", {
                             required: true,
@@ -195,6 +197,7 @@ function Home() {
                         label="Amount"
                         id="amount"
                         autoComplete="amount"
+                        inputMode="numeric"
                         helperText={
                             errors.caloriesPer100g && "Amount is require."
                         }
@@ -224,9 +227,6 @@ function Home() {
                         {isLoading ? <CircularProgress size={25} /> : "Submit"}
                     </Button>
                 </Box>
-                {isError && (
-                    <Alert severity="error">Something went wrong!</Alert>
-                )}
             </Box>
         </Container>
     );

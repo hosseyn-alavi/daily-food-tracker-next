@@ -10,24 +10,22 @@ import {
     DialogContent,
     DialogTitle,
     Fab,
-    Snackbar,
     TextField,
 } from "@mui/material";
 import {useState} from "react";
 import {useForm} from "react-hook-form";
 import type {FoodAttributes} from "@/models/Food";
 import {addFood} from "@/lib/api/addFood";
+import {enqueueSnackbar} from "notistack";
 
 interface Props {
     resetList: () => void;
 }
 
 export const AddFoodForm = ({resetList}: Props) => {
-    const [openSnackbar, setOpenSnackbar] = useState(false);
     const [openDialog, setOpenDialog] = useState(false);
     const [isError, setIsError] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
-    const [message, setMessage] = useState("");
 
     const handleCloseDialog = () => {
         setOpenDialog(false);
@@ -43,19 +41,22 @@ export const AddFoodForm = ({resetList}: Props) => {
     } = useForm<FoodAttributes>();
 
     const onSubmit = async (data: FoodAttributes) => {
+        setIsLoading(true);
         const error = await addFood(data);
 
         if (error) {
-            setIsLoading(false);
             setIsError(true);
+            enqueueSnackbar({message: "Error adding food", variant: "error"});
         } else {
-            setIsLoading(false);
             setIsError(false);
-            setMessage("Food added successfully");
-            setOpenSnackbar(true);
+            enqueueSnackbar({
+                message: "Food added successfully",
+                variant: "success",
+            });
             handleCloseDialog();
             resetList();
         }
+        setIsLoading(false);
     };
 
     return (
@@ -82,17 +83,6 @@ export const AddFoodForm = ({resetList}: Props) => {
                 </Fab>
             </Box>
 
-            <Snackbar
-                open={openSnackbar}
-                anchorOrigin={{horizontal: "center", vertical: "top"}}
-                onClose={() => {
-                    setOpenSnackbar(false);
-                }}
-                autoHideDuration={3000}
-            >
-                <Alert severity="success">{message}</Alert>
-            </Snackbar>
-
             <Dialog open={openDialog} onClose={handleCloseDialog}>
                 <DialogTitle>Add Food</DialogTitle>
                 <Box
@@ -113,8 +103,8 @@ export const AddFoodForm = ({resetList}: Props) => {
                             {...register("name", {required: true})}
                             helperText={errors.name && "Food name is require."}
                             error={Boolean(errors.name)}
-                            InputLabelProps={{
-                                shrink: Boolean(watch("name")),
+                            slotProps={{
+                                inputLabel: {shrink: Boolean(watch("name"))},
                             }}
                         />
                         <TextField
@@ -130,8 +120,10 @@ export const AddFoodForm = ({resetList}: Props) => {
                                 "CaloriesPer100g  is require."
                             }
                             error={Boolean(errors.caloriesPer100g)}
-                            InputLabelProps={{
-                                shrink: Boolean(watch("caloriesPer100g")),
+                            slotProps={{
+                                inputLabel: {
+                                    shrink: Boolean(watch("caloriesPer100g")),
+                                },
                             }}
                         />
                         <TextField
@@ -142,8 +134,10 @@ export const AddFoodForm = ({resetList}: Props) => {
                             id="defaultWeight"
                             {...register("defaultWeight")}
                             error={Boolean(errors.defaultWeight)}
-                            InputLabelProps={{
-                                shrink: Boolean(watch("defaultWeight")),
+                            slotProps={{
+                                inputLabel: {
+                                    shrink: Boolean(watch("defaultWeight")),
+                                },
                             }}
                         />
                     </DialogContent>
@@ -151,7 +145,7 @@ export const AddFoodForm = ({resetList}: Props) => {
                     <DialogActions>
                         <Button onClick={handleCloseDialog}>Cancel</Button>
                         {isLoading ? (
-                            <CircularProgress />
+                            <CircularProgress size={23} />
                         ) : (
                             <Button type="submit" disabled={isLoading}>
                                 Submit

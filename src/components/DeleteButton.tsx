@@ -1,9 +1,17 @@
-import {Alert, Button, IconButton, Snackbar} from "@mui/material";
+import {
+    Alert,
+    Button,
+    CircularProgress,
+    IconButton,
+    Dialog,
+    DialogActions,
+    DialogTitle,
+} from "@mui/material";
 import ClearIcon from "@mui/icons-material/Clear";
-import {Dialog, DialogActions, DialogTitle} from "@mui/material";
 import {useState} from "react";
 import {deleteFood} from "@/lib/api/deleteFood";
 import {deleteRecord} from "@/lib/api/deleteRecord";
+import {enqueueSnackbar} from "notistack";
 
 interface Props {
     resetList: () => void;
@@ -13,15 +21,16 @@ interface Props {
 
 export const DeleteButton = ({resetList, id, type}: Props) => {
     const [openDialog, setOpenDialog] = useState(false);
-    const [openSnackbar, setOpenSnackbar] = useState(false);
     const [isError, setIsError] = useState(false);
-    const [message, setMessage] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
 
     const handleCloseDialog = () => {
         setOpenDialog(false);
     };
 
     const handleDelete = async (fId: number) => {
+        setIsLoading(true);
+        handleCloseDialog();
         const error =
             type === "food"
                 ? await deleteFood(fId)
@@ -31,36 +40,33 @@ export const DeleteButton = ({resetList, id, type}: Props) => {
 
         if (error) {
             setIsError(true);
+            enqueueSnackbar({message: "Error deleting food", variant: "error"});
         } else {
             setIsError(false);
-            setMessage("Food deleted successfully");
-            setOpenSnackbar(true);
-            handleCloseDialog();
+            enqueueSnackbar({
+                message: "Food deleted successfully",
+                variant: "success",
+            });
+
             resetList();
         }
+        setIsLoading(false);
     };
 
     return (
         <>
             <IconButton
-                aria-label="logout"
+                sx={{position: "absolute", top: 0, right: 0}}
                 color="error"
                 onClick={() => {
                     setOpenDialog(true);
                 }}
+                disabled={isLoading}
+                size="small"
             >
-                <ClearIcon />
+                {!isLoading ? <ClearIcon /> : <CircularProgress size={20} />}
             </IconButton>
-            <Snackbar
-                open={openSnackbar}
-                anchorOrigin={{horizontal: "center", vertical: "top"}}
-                onClose={() => {
-                    setOpenSnackbar(false);
-                }}
-                autoHideDuration={3000}
-            >
-                <Alert severity="success">{message}</Alert>
-            </Snackbar>
+
             <Dialog open={openDialog} onClose={handleCloseDialog}>
                 <DialogTitle>Are you sure?</DialogTitle>
 
