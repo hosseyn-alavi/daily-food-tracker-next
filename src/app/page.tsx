@@ -184,6 +184,7 @@ function Home() {
                         }
                         error={Boolean(errors.caloriesPer100g)}
                         slotProps={{
+                            input: {inputMode: "numeric"},
                             inputLabel: {
                                 shrink: Boolean(watch("caloriesPer100g")),
                             },
@@ -197,13 +198,13 @@ function Home() {
                         label="Amount"
                         id="amount"
                         autoComplete="amount"
-                        inputMode="numeric"
                         helperText={
                             errors.caloriesPer100g && "Amount is require."
                         }
                         error={Boolean(errors.amount)}
                         {...register("amount", {required: true})}
                         slotProps={{
+                            input: {inputMode: "numeric"},
                             inputLabel: {
                                 shrink: Boolean(watch("amount")),
                             },
