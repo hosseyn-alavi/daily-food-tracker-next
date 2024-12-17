@@ -3,40 +3,27 @@ import {type NextRequest, NextResponse} from "next/server";
 
 const SECRET_KEY = process.env.SECRET_KEY ?? "";
 
-function validateJWT(token: string) {
-    try {
-        // Verify the token
-        const decoded = jwt.verify(token, SECRET_KEY);
-        return decoded as {
-            username: string;
-            userId: number;
-            dailyGoal: number;
-            iat: number;
-            exp: number;
-        }; // Return decoded payload (user details)
-    } catch (error) {
-        throw NextResponse.json({error: "Unauthorized"}, {status: 403});
-    }
-}
+export type Params = {params: Record<string, string>};
+export type TokenValues = {
+    username: string;
+    userId: number;
+    dailyGoal: number;
+    iat: number;
+    exp: number;
+};
 
-export function authorizeApi(req: Request) {
-    const authHeader = req.headers.get("authorization");
-    if (!authHeader || !authHeader?.startsWith("Bearer ")) {
-        throw NextResponse.json({error: "Unauthorized"}, {status: 403});
-    }
-
-    const token = authHeader.split(" ")[1];
-    return validateJWT(token);
-}
-
-type Params = {params:{id:string}}
-
-export function withAuth(handler: (req: NextRequest, params:Params) => Promise<NextResponse>) {
-    return async (req: NextRequest, params:Params) => {
+export function withAuth(
+    handler: (
+        req: NextRequest,
+        params: Params,
+        values: TokenValues
+    ) => Promise<NextResponse>
+) {
+    return async (req: NextRequest, params: Params) => {
         try {
-            authorizeApi(req);
+            const tokenValues = authorizeApi(req);
 
-            return await handler(req, params);
+            return await handler(req, params, tokenValues);
         } catch (error: unknown) {
             const err = error as {status: number; message: string};
 
@@ -54,4 +41,24 @@ export function withAuth(handler: (req: NextRequest, params:Params) => Promise<N
             );
         }
     };
+}
+
+function validateJWT(token: string) {
+    try {
+        // Verify the token
+        const decoded = jwt.verify(token, SECRET_KEY);
+        return decoded as TokenValues;
+    } catch (error) {
+        throw NextResponse.json({error: "Unauthorized"}, {status: 403});
+    }
+}
+
+function authorizeApi(req: Request) {
+    const authHeader = req.headers.get("authorization");
+    if (!authHeader?.startsWith("Bearer ")) {
+        throw NextResponse.json({error: "Unauthorized"}, {status: 403});
+    }
+
+    const token = authHeader.split(" ")[1];
+    return validateJWT(token);
 }
