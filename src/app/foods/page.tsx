@@ -1,5 +1,5 @@
 "use client";
-import {Container, Box, Paper, Typography} from "@mui/material";
+import {Container, Box, Paper, Typography, Grid2} from "@mui/material";
 import {useCallback, useEffect, useState} from "react";
 
 import {DeleteButton} from "../../components/DeleteButton";
@@ -50,8 +50,8 @@ function FoodsPage() {
                                 position: "relative",
                             }}
                         >
-                            <Typography variant="body1">
-                                Food name = {item.name}
+                            <Typography variant="body1" fontWeight="bold">
+                                {item.name}
                             </Typography>
                             {!!item.id && (
                                 <DeleteButton
@@ -61,14 +61,25 @@ function FoodsPage() {
                                 />
                             )}
                         </Box>
+                        <Grid2 container mt={1}>
+                            <Grid2 size={6}>
+                                <Typography variant="body2">
+                                    {item.caloriesPer100g}&nbsp;
+                                    <Typography variant="caption" fontSize={10}>
+                                        Kcal/100g
+                                    </Typography>
+                                </Typography>
+                            </Grid2>
 
-                        <Typography variant="body1">
-                            Calories in 100gr = {item.caloriesPer100g}
-                        </Typography>
-
-                        <Typography variant="body1">
-                            Weight = {item.defaultWeight}
-                        </Typography>
+                            <Grid2 size={6}>
+                                <Typography variant="body2">
+                                    {item.defaultWeight}
+                                    <Typography variant="caption" fontSize={10}>
+                                        g
+                                    </Typography>
+                                </Typography>
+                            </Grid2>
+                        </Grid2>
                     </Paper>
                 ))}
             </Box>

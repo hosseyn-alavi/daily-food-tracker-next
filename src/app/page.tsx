@@ -171,7 +171,7 @@ function Home() {
                         margin="normal"
                         required
                         fullWidth
-                        label="Calories per 100gr8"
+                        label="Calories per 100gr"
                         id="cal-per-100gr"
                         autoComplete="calories per 100gr"
                         {...register("caloriesPer100g", {
