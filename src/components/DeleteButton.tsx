@@ -31,12 +31,13 @@ export const DeleteButton = ({resetList, id, type}: Props) => {
     const handleDelete = async (fId: number) => {
         setIsLoading(true);
         handleCloseDialog();
-        const error =
-            type === "food"
-                ? await deleteFood(fId)
-                : type === "record"
-                ? await deleteRecord(fId)
-                : null;
+        let error = null;
+        if (type === "food") {
+            error = await deleteFood(fId);
+        }
+        if (type === "record") {
+            error = await deleteRecord(fId);
+        }
 
         if (error) {
             setIsError(true);

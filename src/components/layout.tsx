@@ -29,7 +29,9 @@ export const Layout = ({children}: LayoutProps) => {
 
     return (
         <ThemeProvider theme={theme}>
-            <SnackbarProvider />
+            <SnackbarProvider
+                anchorOrigin={{vertical: "top", horizontal: "center"}}
+            />
             <Box
                 sx={(theme) => ({
                     backgroundColor: theme.palette.background.paper,
@@ -63,10 +65,10 @@ export const Layout = ({children}: LayoutProps) => {
                                 onClick={() => router.push("/")}
                             />
                             <BottomNavigationAction
-                                value="/view"
-                                label="View"
+                                value="/history"
+                                label="History"
                                 icon={<TableView />}
-                                onClick={() => router.push("/view")}
+                                onClick={() => router.push("/history")}
                             />
                             <BottomNavigationAction
                                 value="/foods"
