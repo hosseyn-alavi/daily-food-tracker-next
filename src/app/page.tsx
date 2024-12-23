@@ -3,7 +3,7 @@ import {cookies} from "next/headers";
 import {getDailyRecordsServer} from "@/lib/api/getDailyRecord";
 import {getFoodsListServer} from "@/lib/api/getFoodList";
 
-async function HomeWrapper() {
+async function HomePage() {
     const cookieStore = cookies();
     const token = cookieStore.get("token")?.value;
 
@@ -13,4 +13,4 @@ async function HomeWrapper() {
     return <Home foods={foods} initialDailyRecords={initialDailyRecords} />;
 }
 
-export default HomeWrapper;
+export default HomePage;

@@ -1,4 +1,4 @@
-import type {FoodDetailsRecord} from "@/app/page";
+import type {FoodDetailsRecord} from "@/app/Home";
 import {getCurrentDate} from "../utils/getCurrentDate";
 import axios from "./axios";
 
