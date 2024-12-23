@@ -1,15 +1,15 @@
 import axios from "axios";
+import Cookies from "js-cookie";
 
 const instance = axios.create({
     baseURL: "/api",
 });
 
-const getToken = () => localStorage.getItem("token");
-
 export default instance;
 instance.interceptors.request.use((req) => {
     if (req.url !== "/login") {
-        req.headers.Authorization = `Bearer ${getToken()}`;
+        const token = Cookies.get("token");
+        req.headers.Authorization = `Bearer ${token}`;
     }
     return req;
 });
@@ -20,7 +20,7 @@ instance.interceptors.response.use(
     },
     (error) => {
         if (error.response.status === 403) {
-            localStorage.removeItem("token");
+            Cookies.remove("token");
             window.location.href = "/login";
         }
 

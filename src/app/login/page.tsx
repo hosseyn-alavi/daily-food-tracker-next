@@ -7,9 +7,10 @@ import Container from "@mui/material/Container";
 import {useForm} from "react-hook-form";
 
 import {useState} from "react";
-import {Alert, CircularProgress} from "@mui/material";
+import {CircularProgress} from "@mui/material";
 import {login} from "@/lib/api/auth";
 import {useRouter} from "next/navigation";
+import {enqueueSnackbar} from "notistack";
 
 export interface Inputs {
     username: string;
@@ -17,7 +18,6 @@ export interface Inputs {
 }
 
 const LoginForm = () => {
-    const [isError, setIsError] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
 
     const router = useRouter();
@@ -35,10 +35,10 @@ const LoginForm = () => {
 
         if (res.token) {
             setIsLoading(false);
-            setIsError(false);
+
             router.push("/");
         } else {
-            setIsError(true);
+            enqueueSnackbar("Invalid username or password", {variant: "error"});
             setIsLoading(false);
         }
         reset();
@@ -104,9 +104,6 @@ const LoginForm = () => {
                         {isLoading ? <CircularProgress size={23} /> : "Sign In"}
                     </Button>
                 </Box>
-                {isError && (
-                    <Alert severity="error">Something went wrong!</Alert>
-                )}
             </Box>
         </Container>
     );

@@ -1,5 +1,6 @@
 import type {Inputs} from "@/app/login/page";
 import axios from "./axios";
+import Cookies from "js-cookie";
 
 export const login = async (arg: Inputs) => {
     try {
@@ -8,7 +9,7 @@ export const login = async (arg: Inputs) => {
             password: arg.password,
         });
         if (response.data.token) {
-            localStorage.setItem("token", response.data.token);
+            Cookies.set("token", response.data.token, {expires: 7});
         }
         return response.data;
     } catch (error) {

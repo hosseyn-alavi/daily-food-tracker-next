@@ -5,6 +5,7 @@ import {ThemeProvider, createTheme} from "@mui/material/styles";
 import {usePathname, useRouter} from "next/navigation";
 import {SnackbarProvider} from "notistack";
 import {useEffect, type ReactNode} from "react";
+import Cookies from "js-cookie";
 
 interface LayoutProps {
     children: ReactNode; // Specify that the layout can wrap other components
@@ -15,7 +16,8 @@ export const Layout = ({children}: LayoutProps) => {
     const pathname = usePathname();
 
     useEffect(() => {
-        const token = localStorage.getItem("token");
+        const token = Cookies.get("token");
+
         if (!token) {
             router.push("/login");
         }
