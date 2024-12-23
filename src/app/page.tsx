@@ -17,7 +17,6 @@ import {
     TextField,
     Typography,
 } from "@mui/material";
-import {useRouter} from "next/navigation";
 import {enqueueSnackbar} from "notistack";
 import {useCallback, useEffect, useState} from "react";
 import {useForm} from "react-hook-form";
@@ -39,8 +38,6 @@ function Home() {
     const [isGetDailyRecordsLoading, setIsGetDailyRecordsLoading] =
         useState(false);
     const [isGetFoodsLoading, setIsGetFoodsLoading] = useState(false);
-
-    const router = useRouter();
 
     const {
         register,
@@ -70,15 +67,9 @@ function Home() {
     }, []);
 
     useEffect(() => {
-        const token = localStorage.getItem("token");
-
-        if (!token) {
-            router.push("/login");
-        }
-
         getFoods();
         getDailyRecordsApi();
-    }, [getFoods, router, getDailyRecordsApi]);
+    }, [getFoods, getDailyRecordsApi]);
 
     const onSubmit = async (data: FoodDetailsRecord) => {
         data.total = ((data.amount ?? 0) * (data.caloriesPer100g ?? 0)) / 100;

@@ -1,8 +1,9 @@
 import {Logout} from "@mui/icons-material";
 import {IconButton} from "@mui/material";
+import Cookies from "js-cookie";
 
 const handleLogout = () => {
-    localStorage.removeItem("token");
+    Cookies.remove("token");
     window.location.reload();
 };
 
